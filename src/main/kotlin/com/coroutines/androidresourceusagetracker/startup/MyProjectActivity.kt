@@ -1,4 +1,4 @@
-package com.github.dmitrish.androidresourceusagetracker.startup
+package com.coroutines.androidresourceusagetracker.startup
 
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project

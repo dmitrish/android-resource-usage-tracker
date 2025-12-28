@@ -1,9 +1,9 @@
-package com.github.dmitrish.androidresourceusagetracker.services
+package com.coroutines.androidresourceusagetracker.services
 
+import com.coroutines.androidresourceusagetracker.MyBundle
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
-import com.github.dmitrish.androidresourceusagetracker.MyBundle
 
 @Service(Service.Level.PROJECT)
 class MyProjectService(project: Project) {

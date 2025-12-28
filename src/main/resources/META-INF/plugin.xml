@@ -1,15 +1,18 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.dmitrish.androidresourceusagetracker</id>
-    <name>android-resource-usage-tracker</name>
-    <vendor>dmitrish</vendor>
-
+    <id>com.coroutines.androidresourceusagetracker</id>
+    <name>Android Resource Usage Tracker</name>
+    <vendor>coroutines.com</vendor>
+    <description><![CDATA[
+  An IntelliJ IDEA / Android Studio plugin that enhances developer productivity
+  by providing real-time insights into how Android resources are used across your project.
+]]></description>
     <depends>com.intellij.modules.platform</depends>
-
-    <resource-bundle>messages.MyBundle</resource-bundle>
+    <depends>org.jetbrains.android</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.dmitrish.androidresourceusagetracker.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="com.github.dmitrish.androidresourceusagetracker.startup.MyProjectActivity" />
+        <codeInsight.lineMarkerProvider
+                language="XML"
+                implementationClass="com.coroutines.androidresourceusagetracker.ResourceUsageLineMarkerProvider"/>
     </extensions>
 </idea-plugin>

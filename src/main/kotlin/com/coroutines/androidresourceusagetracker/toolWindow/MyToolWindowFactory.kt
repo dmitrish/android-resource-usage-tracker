@@ -1,5 +1,6 @@
-package com.github.dmitrish.androidresourceusagetracker.toolWindow
+package com.coroutines.androidresourceusagetracker.toolWindow
 
+import com.coroutines.androidresourceusagetracker.MyBundle
 import com.intellij.openapi.components.service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
@@ -8,8 +9,7 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.content.ContentFactory
-import com.github.dmitrish.androidresourceusagetracker.MyBundle
-import com.github.dmitrish.androidresourceusagetracker.services.MyProjectService
+import com.coroutines.androidresourceusagetracker.services.MyProjectService
 import javax.swing.JButton
 
 

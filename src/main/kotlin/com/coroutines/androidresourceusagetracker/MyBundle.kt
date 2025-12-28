@@ -1,4 +1,4 @@
-package com.github.dmitrish.androidresourceusagetracker
+package com.coroutines.androidresourceusagetracker
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls
