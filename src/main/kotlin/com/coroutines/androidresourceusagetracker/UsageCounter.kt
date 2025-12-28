@@ -3,6 +3,7 @@ package com.coroutines.androidresourceusagetracker
 import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.module.ModuleUtilCore
+import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.psi.PsiElement
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.PsiSearchHelper
@@ -11,23 +12,33 @@ import com.intellij.psi.search.UsageSearchContext
 import com.intellij.psi.xml.XmlTag
 import com.intellij.psi.xml.XmlAttributeValue
 
+data class ResourceUsage(
+    val filePath: String,
+    val lineNumber: Int,
+    val codeSnippet: String
+)
+
 object UsageCounter {
 
     private val LOG = Logger.getInstance(UsageCounter::class.java)
 
     fun countUsages(element: XmlTag): Int {
-        return ReadAction.compute<Int, RuntimeException> {
+        return getUsages(element).size
+    }
+
+    fun getUsages(element: XmlTag): List<ResourceUsage> {
+        return ReadAction.compute<List<ResourceUsage>, RuntimeException> {
             try {
-                val module = ModuleUtilCore.findModuleForPsiElement(element) ?: return@compute 0
-                val resourceName = element.getAttributeValue("name") ?: return@compute 0
-                val resourceType = getResourceType(element) ?: return@compute 0
+                val module = ModuleUtilCore.findModuleForPsiElement(element) ?: return@compute emptyList()
+                val resourceName = element.getAttributeValue("name") ?: return@compute emptyList()
+                val resourceType = getResourceType(element) ?: return@compute emptyList()
                 val project = element.project
                 val definitionFile = element.containingFile
 
                 val scope = GlobalSearchScope.moduleScope(module)
                 val searchHelper = PsiSearchHelper.getInstance(project)
 
-                var usageCount = 0
+                val usages = mutableListOf<ResourceUsage>()
                 val seenLocations = mutableSetOf<String>()
 
                 searchHelper.processElementsWithWord(
@@ -56,13 +67,30 @@ object UsageCounter {
                             // Only count specific PSI element types that represent actual references
                             if (isLeafReference(psiElement, resourceType, resourceName)) {
                                 // Create unique key: file + line number
-                                val line = containingFile.viewProvider.document?.getLineNumber(psiElement.textRange.startOffset) ?: -1
+                                val document = containingFile.viewProvider.document
+                                val line = document?.getLineNumber(psiElement.textRange.startOffset) ?: -1
                                 val key = "$path:$line"
 
                                 if (!seenLocations.contains(key)) {
                                     seenLocations.add(key)
-                                    usageCount++
-                                    LOG.info("  ✓ Counted usage at $key")
+
+                                    // Extract code snippet
+                                    val lineText = if (document != null && line >= 0) {
+                                        val lineStart = document.getLineStartOffset(line)
+                                        val lineEnd = document.getLineEndOffset(line)
+                                        document.getText(com.intellij.openapi.util.TextRange(lineStart, lineEnd)).trim()
+                                    } else {
+                                        psiElement.text
+                                    }
+
+                                    // Get relative file path
+                                    val relativePath = path.substringAfterLast("/app/src/main/", path.substringAfterLast("/"))
+
+                                    usages.add(ResourceUsage(
+                                        filePath = relativePath,
+                                        lineNumber = line + 1, // 1-indexed for display
+                                        codeSnippet = lineText
+                                    ))
                                 }
                             }
                         }
@@ -75,12 +103,15 @@ object UsageCounter {
                     true
                 )
 
-                LOG.info("Found $usageCount actual usage(s) of $resourceType/$resourceName")
-                return@compute usageCount
+                LOG.info("Found ${usages.size} actual usage(s) of $resourceType/$resourceName")
+                return@compute usages
 
+            } catch (e: ProcessCanceledException) {
+                // CRITICAL: Rethrow ProcessCanceledException - never catch it!
+                throw e
             } catch (e: Exception) {
                 LOG.error("Error counting usages", e)
-                return@compute 0
+                return@compute emptyList()
             }
         }
     }
