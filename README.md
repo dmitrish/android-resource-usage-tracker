@@ -68,8 +68,8 @@ Track and visualize Android resource usage across your entire project with intui
 
 ## Requirements
 
-- Android Studio Hedgehog (2023.1.1) or newer
-- IntelliJ IDEA 2023.3 or newer with Android plugin
+- Android Studio Ladybug (2025.2.1) or newer
+- IntelliJ IDEA 2025.2 or newer with Android plugin
 
 ## Installation
 
