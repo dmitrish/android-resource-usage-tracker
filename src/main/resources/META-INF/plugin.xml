@@ -4,9 +4,29 @@
     <name>Android Resource Usage Tracker</name>
     <vendor>coroutines.com</vendor>
     <description><![CDATA[
-  An IntelliJ IDEA / Android Studio plugin that enhances developer productivity
-  by providing real-time insights into how Android resources are used across your project.
-]]></description>
+    Track and visualize Android resource usage across your project.
+
+    Features:
+    • Visual usage counters in the gutter for all Android resources (strings, colors, styles, etc.)
+    • Click to see all usages with code snippets
+    • Cross-module search - finds usages in all modules
+    • AndroidManifest.xml theme detection
+    • Smart deduplication using PSI tree hashing
+    • Performance optimized with word-based indexing
+    ]]></description>
+
+    <change-notes><![CDATA[
+    <h3>Version 0.0.1</h3>
+    <ul>
+      <li>Initial release</li>
+      <li>Usage tracking for strings, colors, dimensions, styles, and more</li>
+      <li>Cross-module search support</li>
+      <li>Interactive popup with navigation</li>
+    </ul>
+    ]]></change-notes>
+
+    <!-- Add compatibility range -->
+    <idea-version since-build="233.0" until-build="243.*"/>
     <depends>com.intellij.modules.platform</depends>
     <depends>org.jetbrains.android</depends>
 

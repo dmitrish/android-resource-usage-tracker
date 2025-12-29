@@ -1,49 +1,104 @@
-# android-resource-usage-tracker
+# Android Resource Usage Tracker
 
 ![Build](https://github.com/dmitrish/android-resource-usage-tracker/workflows/Build/badge.svg)
 [![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
 
-## Template ToDo list
-- [x] Create a new [IntelliJ Platform Plugin Template][template] project.
-- [ ] Get familiar with the [template documentation][template].
-- [ ] Adjust the [pluginGroup](./gradle.properties) and [pluginName](./gradle.properties), as well as the [id](./src/main/resources/META-INF/plugin.xml) and [sources package](./src/main/kotlin).
-- [ ] Adjust the plugin description in `README` (see [Tips][docs:plugin-description])
-- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html?from=IJPluginTemplate).
-- [ ] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate) for the first time.
-- [ ] Set the `MARKETPLACE_ID` in the above README badges. You can obtain it once the plugin is published to JetBrains Marketplace.
-- [ ] Set the [Plugin Signing](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html?from=IJPluginTemplate) related [secrets](https://github.com/JetBrains/intellij-platform-plugin-template#environment-variables).
-- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html?from=IJPluginTemplate).
-- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
-- [ ] Configure the [CODECOV_TOKEN](https://docs.codecov.com/docs/quick-start) secret for automated test coverage reports on PRs
-
 <!-- Plugin description -->
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
+Track and visualize Android resource usage across your entire project with intuitive gutter icons and interactive popups.
 
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
+**Features:**
+- **Visual Usage Counters** - See at a glance how many times each resource is used with color-coded gutter icons
+- **Interactive Click Navigation** - Click any usage counter to see all usages with code snippets and navigate directly to them
+- **Cross-Module Search** - Finds usages across all modules in multi-module projects
+- **AndroidManifest.xml Detection** - Detects theme and style references in manifest files
+- **Smart Deduplication** - Uses PSI tree hashing to avoid duplicate results
+- **Performance Optimized** - Word-based indexing for fast searches even in large projects
+- **Supports All Resource Types** - Strings, colors, dimensions, styles, drawables, and more
 
-To keep everything working, do not remove `<!-- ... -->` sections. 
+**Perfect for:**
+- Identifying unused resources for cleanup
+- Understanding resource dependencies
+- Refactoring with confidence
+- Code reviews and audits
 <!-- Plugin description end -->
+
+## Screenshots
+
+![Resource Usage Tracker in Action](https://via.placeholder.com/800x400?text=Add+Screenshot+Here)
+*Gutter icons showing resource usage counts with interactive popup*
+
+## Usage
+
+1. Open any Android resource file (e.g., `res/values/strings.xml`, `res/values/colors.xml`)
+2. Look for colored badges in the gutter next to each resource definition
+3. Click on any badge to see:
+  - All usages across your project
+  - Code snippets showing context
+  - File paths and line numbers
+4. Double-click any usage to navigate directly to that location
+
+**Understanding the Badge Colors:**
+
+| Color | Usage Count | Meaning | Action |
+|-------|-------------|---------|--------|
+| 🔴 Red | 0 | Unused resource | Safe to delete - consider cleanup |
+| 🟢 Green | 1-4 | Normal usage | Standard resource, well-scoped |
+| 🟠 Orange | 5+ | Heavily used | Core resource, refactor carefully |
+
+## Supported Resource Types
+
+- Strings (`<string>`)
+- Colors (`<color>`)
+- Dimensions (`<dimen>`)
+- Styles and Themes (`<style>`)
+- Drawables (`<drawable>`)
+- Integers (`<integer>`)
+- Booleans (`<bool>`)
+- Arrays (`<array>`, `<string-array>`, `<integer-array>`)
+- Plurals (`<plurals>`)
+- IDs (`<id>`)
+
+## Requirements
+
+- Android Studio Arctic Fox (2020.3.1) or newer
+- IntelliJ IDEA with Android plugin
 
 ## Installation
 
-- Using the IDE built-in plugin system:
+- **Using IDE built-in plugin system:**
 
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "android-resource-usage-tracker"</kbd> >
-  <kbd>Install</kbd>
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Android Resource Usage Tracker"</kbd> > <kbd>Install</kbd>
 
-- Using JetBrains Marketplace:
+- **Using JetBrains Marketplace:**
 
-  Go to [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID) and install it by clicking the <kbd>Install to ...</kbd> button in case your IDE is running.
+  Go to [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/coroutines) and install it by clicking the <kbd>Install to ...</kbd> button in case your IDE is running.
 
-  You can also download the [latest release](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID/versions) from JetBrains Marketplace and install it manually using
+  You can also download the [latest release](https://plugins.jetbrains.com/plugin/coroutines/versions) from JetBrains Marketplace and install it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
-- Manually:
+- **Manually:**
 
   Download the [latest release](https://github.com/dmitrish/android-resource-usage-tracker/releases/latest) and install it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
+## Known Limitations
+
+- Does not track resources used via reflection or dynamic resource loading
+- Generated files (R.java, BuildConfig) are excluded from usage counts
+- First-time indexing may take a moment in very large projects
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Support
+
+If you encounter any issues or have feature requests, please [open an issue](https://github.com/dmitrish/android-resource-usage-tracker/issues) on GitHub.
 
 ---
 Plugin based on the [IntelliJ Platform Plugin Template][template].

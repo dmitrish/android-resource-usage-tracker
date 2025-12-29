@@ -19,33 +19,6 @@ import javax.swing.border.EmptyBorder
 
 class ResourceUsageLineMarkerProvider : LineMarkerProvider {
 
-    /*
-    override fun getLineMarkerInfo(element: PsiElement): LineMarkerInfo<*>? {
-        if (element !is XmlTag) return null
-        if (element.name !in listOf("string", "color", "dimen", "style", "drawable", "integer", "bool", "array", "string-array", "integer-array", "plurals", "id")) {
-            return null
-        }
-
-        val resourceName = element.getAttributeValue("name") ?: return null
-        val count = UsageCounter.countUsages(element)
-
-        return LineMarkerInfo(
-            element,
-            element.textRange,
-            createUsageIcon(count),
-            { "$count usage${if (count != 1) "s" else ""}" },
-            { e, elt ->
-                if (count > 0) {
-                    showUsagesPopup(e, elt as XmlTag, elt.project)
-                }
-            },
-            GutterIconRenderer.Alignment.RIGHT,
-            { "$count usage${if (count != 1) "s" else ""}" }
-        )
-    }
-
-     */
-
     override fun getLineMarkerInfo(element: PsiElement): LineMarkerInfo<*>? {
         // Only process the tag name identifier (leaf element), not the whole tag
         if (element !is com.intellij.psi.xml.XmlToken) return null
@@ -94,6 +67,7 @@ class ResourceUsageLineMarkerProvider : LineMarkerProvider {
             { "$count usage${if (count != 1) "s" else ""}" }
         )
     }
+
     private fun createUsageIcon(count: Int): Icon {
         return object : Icon {
             override fun getIconWidth() = 21
@@ -104,9 +78,9 @@ class ResourceUsageLineMarkerProvider : LineMarkerProvider {
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
 
                 val color = when {
-                    count == 0 -> JBColor(Color(200, 200, 200), Gray._100)
-                    count < 5 -> JBColor(Color(100, 180, 255), Color(80, 140, 200))
-                    else -> JBColor(Color(100, 200, 100), Color(80, 160, 80))
+                    count == 0 -> JBColor(Color(220, 80, 80), Color(180, 60, 60))      // Red - unused
+                    count in 1..4 -> JBColor(Color(100, 200, 100), Color(80, 160, 80)) // Green - normal
+                    else -> JBColor(Color(255, 165, 0), Color(220, 140, 0))             // Orange - heavily used
                 }
 
                 g2d.color = color
@@ -146,7 +120,7 @@ class ResourceUsageLineMarkerProvider : LineMarkerProvider {
 
         panel.add(titleLabel, BorderLayout.NORTH)
 
-        val usagesList = createUsagesList(usages, project)
+        val usagesList = createUsagesList(usages, project, popup)
         val scrollPane = JScrollPane(usagesList).apply {
             preferredSize = Dimension(600, minOf(300, usages.size * 60 + 20))
             border = null
@@ -161,7 +135,6 @@ class ResourceUsageLineMarkerProvider : LineMarkerProvider {
         popup.setLocation(locationOnScreen.x + event.x + 10, locationOnScreen.y + event.y)
 
         popup.isVisible = true
-     //   popup.isFocusableWindowState = true
         popup.requestFocus()
 
         popup.addWindowFocusListener(object : java.awt.event.WindowFocusListener {
@@ -172,7 +145,7 @@ class ResourceUsageLineMarkerProvider : LineMarkerProvider {
         })
     }
 
-    private fun createUsagesList(usages: List<ResourceUsage>, project: Project): JList<ResourceUsage> {
+    private fun createUsagesList(usages: List<ResourceUsage>, project: Project, popup: JWindow): JList<ResourceUsage> {
         val listModel = DefaultListModel<ResourceUsage>()
         usages.forEach { listModel.addElement(it) }
 
@@ -184,6 +157,9 @@ class ResourceUsageLineMarkerProvider : LineMarkerProvider {
                 override fun mouseClicked(e: MouseEvent) {
                     if (e.clickCount == 2) {
                         val usage = selectedValue ?: return
+
+                        // Dispose popup BEFORE navigating
+                        popup.dispose()
 
                         // Use the full absolute path directly for navigation
                         val virtualFile = LocalFileSystem.getInstance().findFileByPath(usage.filePath)
