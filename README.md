@@ -1,8 +1,8 @@
 # Android Resource Usage Tracker
 
 ![Build](https://github.com/dmitrish/android-resource-usage-tracker/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
+[![Version](https://img.shields.io/jetbrains/plugin/v/29552-android-resource-usage-tracker.svg)](https://plugins.jetbrains.com/plugin/29552-android-resource-usage-tracker)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/29552-android-resource-usage-tracker.svg)](https://plugins.jetbrains.com/plugin/29552-android-resource-usage-tracker)
 
 <!-- Plugin description -->
 Track and visualize Android resource usage across your entire project with intuitive gutter icons and interactive popups.
@@ -23,10 +23,17 @@ Track and visualize Android resource usage across your entire project with intui
 - Code reviews and audits
 <!-- Plugin description end -->
 
-## Screenshots
+## Demo
 
-![Resource Usage Tracker in Action](https://via.placeholder.com/800x400?text=Add+Screenshot+Here)
-*Gutter icons showing resource usage counts with interactive popup*
+![Android Resource Usage Tracker in Action](docs/demo.gif)
+
+*Visual usage counters with color-coded badges: 🔴 Red (unused), 🟢 Green (1-4 uses), 🟠 Orange (5+ uses)*
+
+## 🚀 Get Started
+
+[![Install from JetBrains Marketplace](https://img.shields.io/badge/Install%20Plugin-IntelliJ%20Marketplace-blue?style=for-the-badge&logo=jetbrains)](https://plugins.jetbrains.com/plugin/29552-android-resource-usage-tracker)
+
+**Quick Install:** `Settings/Preferences` → `Plugins` → `Marketplace` → Search "Android Resource Usage Tracker"
 
 ## Usage
 
@@ -61,8 +68,8 @@ Track and visualize Android resource usage across your entire project with intui
 
 ## Requirements
 
-- Android Studio Arctic Fox (2020.3.1) or newer
-- IntelliJ IDEA with Android plugin
+- Android Studio Hedgehog (2023.1.1) or newer
+- IntelliJ IDEA 2023.3 or newer with Android plugin
 
 ## Installation
 
@@ -72,9 +79,9 @@ Track and visualize Android resource usage across your entire project with intui
 
 - **Using JetBrains Marketplace:**
 
-  Go to [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/coroutines) and install it by clicking the <kbd>Install to ...</kbd> button in case your IDE is running.
+  Go to [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/29552-android-resource-usage-tracker) and install it by clicking the <kbd>Install to ...</kbd> button in case your IDE is running.
 
-  You can also download the [latest release](https://plugins.jetbrains.com/plugin/coroutines/versions) from JetBrains Marketplace and install it manually using
+  You can also download the [latest release](https://plugins.jetbrains.com/plugin/29552-android-resource-usage-tracker/versions) from JetBrains Marketplace and install it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
 - **Manually:**
