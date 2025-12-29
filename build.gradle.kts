@@ -1,6 +1,7 @@
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import java.io.File
 
 plugins {
     id("java") // Java support
@@ -36,15 +37,16 @@ dependencies {
 
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
-        // Use different IDE configuration for CI vs local development
-        val isCI = System.getenv("CI") != null
+        // Use local Android Studio if it exists, otherwise download
+        val localAndroidStudioPath = "/Applications/Android Studio.app"
+        val localAndroidStudio = File(localAndroidStudioPath)
 
-        if (isCI) {
-            // CI: Download Android Studio
-            androidStudio(providers.gradleProperty("platformVersion"))
+        if (localAndroidStudio.exists()) {
+            // Local development: Use installed Android Studio
+            local(localAndroidStudioPath)
         } else {
-            // Local: Use installed Android Studio
-            local("/Applications/Android Studio.app")  // macOS path
+            // CI/Qodana: Download Android Studio
+            androidStudio(providers.gradleProperty("platformVersion"))
         }
 
         // Plugin Dependencies. Uses `platformBundledPlugins` property from the gradle.properties file for bundled IntelliJ Platform plugins.
